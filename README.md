@@ -12,10 +12,10 @@ The codelab is delivered through two Google Colab notebooks at the repo root. Op
 
 | Notebook | Sessions | Covers |
 |----------|----------|--------|
-| [`ADK_Learning_tools.ipynb`](ADK_Learning_tools.ipynb) | 1–3 | GCP setup, first agent, custom tools, agent memory |
-| [`ADK_Learning_tool_multi_agents.ipynb`](ADK_Learning_tool_multi_agents.ipynb) | 4–6 | SequentialAgent, ParallelAgent, Router, Chain, Loop, advanced workflows |
+| [`ADK_Learning_tools.ipynb`](ADK_Learning_tools.ipynb) | 1–4 | GCP setup, first agent, custom tools, agent memory |
+| [`ADK_Learning_tool_multi_agents.ipynb`](ADK_Learning_tool_multi_agents.ipynb) | 5–8 | SequentialAgent, ParallelAgent, Router, Chain, Loop, advanced workflows |
 
-> The `adk_in_local/` directory is a companion local implementation of the major patterns explored in the notebooks, runnable via the ADK web UI.
+> The `adk_in_local/` directory is a companion local implementation of the major patterns explored in the notebooks, runnable via the ADK web UI [Appendix sessions in the codelab].
 
 ---
 
