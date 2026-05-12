@@ -1,0 +1,254 @@
+# ADK Crash Course — From Beginner to Expert
+
+A hands-on master codelab for building sophisticated, autonomous AI agent systems using Google's **Agent Development Kit (ADK)**. The course progresses from building a basic agent to orchestrating complex multi-agent workflows with memory, custom tools, and advanced patterns.
+
+**Codelab:** [codelabs.developers.google.com/onramp/instructions](https://codelabs.developers.google.com/onramp/instructions#0)
+
+---
+
+## Colab Notebooks
+
+The codelab is delivered through two Google Colab notebooks at the repo root. Open them in Colab — no local setup required.
+
+| Notebook | Sessions | Covers |
+|----------|----------|--------|
+| [`ADK_Learning_tools.ipynb`](ADK_Learning_tools.ipynb) | 1–3 | GCP setup, first agent, custom tools, agent memory |
+| [`ADK_Learning_tool_multi_agents.ipynb`](ADK_Learning_tool_multi_agents.ipynb) | 4–6 | SequentialAgent, ParallelAgent, Router, Chain, Loop, advanced workflows |
+
+> The `adk_in_local/` directory is a companion local implementation of the major patterns explored in the notebooks, runnable via the ADK web UI.
+
+---
+
+## Repository Structure
+
+```text
+.
+├── ADK_Learning_tools.ipynb              # Colab notebook — Sessions 1–3 (setup, custom tools, memory)
+├── ADK_Learning_tool_multi_agents.ipynb  # Colab notebook — Sessions 4–6 (multi-agent patterns)
+└── adk_in_local/                         # Local runnable implementation of all agent modules
+    ├── a_single_agent/                   # Single agent — creative outing planner
+    ├── b1_sequential_agent/              # Sequential — find location then get directions
+    ├── b2_parallel_agent/                # Parallel — search museum, concert, restaurant simultaneously
+    ├── b3_loop_agent/                    # Loop — refine plan until constraint is satisfied
+    ├── b4_manual_sequential_flow/        # Manual orchestration — hand-rolled sequential dispatch
+    ├── c_custom_agent/                   # Custom BaseAgent — budget-aware planner with Python gates
+    ├── d_routing_agent/                  # LLM router — delegates to specialist sub-agents
+    ├── e_agent_as_tool/                  # Agents as tools — trip architect calling specialist agents
+    ├── f_agent_with_memory/              # Session memory — personalised planner with preference recall
+    ├── g_agents_mcp/                     # MCP toolbox — database-backed destination search
+    ├── agent/                            # Master orchestrator — single root_agent for ADK web UI
+    ├── mcp_tool_box/                     # MCP Toolbox server binary and config
+    ├── requirements.txt
+    ├── setup_venv.sh / setup_venv.bat
+    └── run.sh
+```
+
+---
+
+## Codelab Modules
+
+| Session | Topic | Pattern |
+|---------|-------|---------|
+| 1 | Setup GCP + first agent | Single agent |
+| 2 | Custom Tools | Custom Python functions / real-time APIs |
+| 3 | Agent Memory | Session management, conversational context |
+| 4 | SequentialAgent | Predefined order, shared state |
+| 5 | ParallelAgent | Concurrent specialist agents |
+| 6 | Advanced Workflows | Router, Chain, Loop, Parallel patterns |
+
+### Local Agent Modules (in `adk_in_local/`)
+
+| Module | Pattern | Description |
+|--------|---------|-------------|
+| `a_single_agent` | Single agent | Generates creative dating and outing plan suggestions |
+| `b1_sequential_agent` | Sequential | Finds a location then provides directions to it |
+| `b2_parallel_agent` | Parallel | Searches for museum, concert, and restaurant simultaneously |
+| `b3_loop_agent` | Loop / iterative | Refines a plan repeatedly until a constraint is satisfied |
+| `b4_manual_sequential_flow` | Manual orchestration | Router agent with hand-rolled sequential dispatch logic |
+| `c_custom_agent` | Custom `BaseAgent` | Budget-aware planner with Python decision gates |
+| `d_routing_agent` | LLM router | Delegates to specialist sub-agents based on request type |
+| `e_agent_as_tool` | Agents as tools | Trip architect that calls specialist agents via `AgentTool` |
+| `f_agent_with_memory` | Session memory | Personalised planner that saves and recalls user preferences |
+| `g_agents_mcp` | MCP toolbox | Database-backed destination search via MCP Toolbox (requires external server) |
+
+### Master Orchestrator (`adk_in_local/agent/`)
+
+Exposes a single `root_agent` that the ADK web UI loads. It imports every module above and registers each as a sub-agent. Modules that fail to load (e.g. `g_agents_mcp` when the toolbox server is not running) are skipped automatically.
+
+---
+
+## Prerequisites
+
+- Python 3.8 or higher
+- **Option A (Gemini API key):** A key from [Google AI Studio](https://console.cloud.google.com/apis/api/generativelanguage.googleapis.com/credentials) — no gcloud, no billing needed
+- **Option B (Vertex AI):** A GCP project with billing enabled — see full setup below
+
+---
+
+## Quick Setup (Local)
+
+> **Important:** All setup and run commands must be executed from inside the `adk_in_local/` directory. Navigate there first before running anything.
+
+### Mac / Linux
+
+```bash
+cd adk_in_local
+chmod +x setup_venv.sh
+./setup_venv.sh
+```
+
+### Windows
+
+```cmd
+cd adk_in_local
+setup_venv.bat
+```
+
+The script will:
+
+1. Check for Python 3.8+
+2. Create a `.adk_env` virtual environment
+3. Install dependencies from `requirements.txt`
+4. Prompt for your Google Cloud project ID
+5. Write a `.env` file
+6. Download the MCP Toolbox binary into `mcp_tool_box/` (auto-detected for macOS/Linux; uses `Invoke-WebRequest` on Windows)
+
+---
+
+## Environment Configuration
+
+Create a `.env` file inside `adk_in_local/` by copying the provided template:
+
+```bash
+cp adk_in_local/.env.example adk_in_local/.env
+```
+
+### Option A: Gemini API Key (recommended for local dev — free tier available)
+
+```env
+GOOGLE_GENAI_USE_VERTEXAI=FALSE
+GOOGLE_API_KEY=your-gemini-api-key
+```
+
+Get a key: **Google Cloud Console → Gemini API → Credentials → Create credentials**
+
+### Option B: Vertex AI (GCP — recommended for production)
+
+```env
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+GOOGLE_CLOUD_PROJECT=your-gcp-project-id
+GOOGLE_CLOUD_LOCATION=us-central1
+```
+
+**Full setup steps:**
+
+```bash
+# 1. Install gcloud CLI
+brew install --cask google-cloud-sdk   # macOS
+
+# 2. Authenticate CLI
+gcloud auth login
+
+# 3. Set project
+gcloud config set project YOUR_PROJECT_ID
+
+# 4. Set up Application Default Credentials (required by SDK)
+gcloud auth application-default login
+
+# 5. Enable Vertex AI API
+gcloud services enable aiplatform.googleapis.com --project=YOUR_PROJECT_ID
+```
+
+> **Note:** `gcloud auth login` and `gcloud auth application-default login` are two separate steps. The SDK uses ADC, not CLI credentials — missing step 4 causes a "default credentials not found" error. Billing must be enabled on the project.
+
+---
+
+## Running the Local Agent
+
+> **Important:** All commands below must be run from inside `adk_in_local/`. The ADK web UI looks for the `agent/` module relative to the working directory — running from the repo root will fail.
+
+```bash
+cd adk_in_local
+source .adk_env/bin/activate       # Mac/Linux
+# .adk_env\Scripts\activate        # Windows
+
+./run.sh
+```
+
+Opens the ADK web UI at [http://localhost:8080](http://localhost:8080) with SQLite-backed session persistence.
+
+Or run directly:
+
+```bash
+adk web
+```
+
+---
+
+## MCP Toolbox Setup (`g_agents_mcp`)
+
+The `g_agents_mcp` module requires the MCP Toolbox for Databases server binary running on port 7001 **before** starting `adk web`. Without it, the module is automatically skipped and the other 7 agents load normally.
+
+### 1. Set up the database (one-time)
+
+> The `toolbox` binary is downloaded automatically by `setup_venv.sh`/`setup_venv.bat`. No manual download needed.
+
+```bash
+cd adk_in_local
+source .adk_env/bin/activate   # Mac/Linux
+# .adk_env\Scripts\activate    # Windows
+python setup_trip_database.py
+```
+
+### 2. Start everything
+
+```bash
+cd adk_in_local
+source .adk_env/bin/activate
+./run.sh
+```
+
+`run.sh` automatically starts the MCP Toolbox server in the background on port 7001 before launching `adk web`, and shuts it down cleanly when you stop the UI. You should see `Trip Planner Agent is ready.` and 8/8 agents loaded.
+
+---
+
+## Model
+
+All agents use `gemini-2.5-flash`.
+
+| Model | Free Tier RPM | Notes |
+|-------|--------------|-------|
+| `gemini-2.5-flash` | 5 RPM | Currently active — better quality |
+| `gemini-2.0-flash` | 15 RPM | Shared daily quota exhausts quickly |
+| `gemini-2.0-flash-lite` | 30 RPM | Best fallback for free-tier rate limits |
+
+---
+
+## Troubleshooting: 429 RESOURCE_EXHAUSTED
+
+Multi-agent chains make several LLM calls per request (orchestrator + sub-agents + tool-agents), so rate limits are hit faster than with single agents.
+
+**Mitigations:**
+
+1. **Switch to a higher-quota model** — `gemini-2.0-flash-lite` (30 RPM free tier) is the best fallback if `gemini-2.5-flash` (5 RPM) hits limits. Change the `model=` string in each agent file.
+2. **Use Vertex AI** — Vertex AI has no fixed RPM cap and scales with your GCP billing quota. It eliminates rate limit issues entirely. See [Vertex AI setup](#option-b-vertex-ai-gcp--recommended-for-production) above.
+3. **Client-side retries** — the master orchestrator applies retry config with `initial_delay=2, attempts=3`. Handles temporary spikes but cannot recover an exhausted daily quota — wait for midnight US Pacific reset or use a different API key.
+4. **Request higher quota** — visit [Google AI Studio rate limits](https://ai.dev/rate-limit).
+
+---
+
+## Dependencies
+
+`google-adk` is pinned per Python version in `adk_in_local/requirements.txt`:
+
+| Python version | `google-adk` version |
+|---------------|----------------------|
+| `< 3.9` | `0.3.0` |
+| `>= 3.9, < 3.10` | `1.15.1` |
+| `>= 3.10` | `1.33.0` |
+
+---
+
+## License
+
+See [LICENSE](LICENSE).
