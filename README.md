@@ -23,8 +23,8 @@ The codelab is delivered through two Google Colab notebooks at the repo root. Op
 
 ```text
 .
-├── ADK_Learning_tools.ipynb              # Colab notebook — Sessions 1–3 (setup, custom tools, memory)
-├── ADK_Learning_tool_multi_agents.ipynb  # Colab notebook — Sessions 4–6 (multi-agent patterns)
+├── ADK_Learning_tools.ipynb              # Colab notebook — Sessions 1–4 (setup, custom tools, memory)
+├── ADK_Learning_tool_multi_agents.ipynb  # Colab notebook — Sessions 5–8 (multi-agent patterns)
 └── adk_in_local/                         # Local runnable implementation of all agent modules
     ├── a_single_agent/                   # Single agent — creative outing planner
     ├── b1_sequential_agent/              # Sequential — find location then get directions
