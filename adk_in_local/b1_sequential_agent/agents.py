@@ -1,5 +1,5 @@
+from config import MODEL, SEARCH_TOOLS
 from google.adk.agents import Agent
-from google.adk.tools import google_search
 from google.adk.agents import Agent, SequentialAgent
 from dotenv import load_dotenv, find_dotenv
 
@@ -8,8 +8,8 @@ load_dotenv(find_dotenv())
 # Note the new `output_key` and the more specific instruction.
 foodie_agent = Agent(
     name="foodie_agent",
-    model="gemini-2.5-flash",
-    tools=[google_search],
+    model=MODEL,
+    tools=SEARCH_TOOLS,
     instruction="""You are an expert food critic. Your goal is to find the best restaurant based on a user's request.
 
     When you recommend a place, you must output *only* the name of the establishment and nothing else.
@@ -21,8 +21,8 @@ foodie_agent = Agent(
 # The `{destination}` placeholder is automatically filled by the ADK from the state.
 transportation_agent = Agent(
     name="transportation_agent",
-    model="gemini-2.5-flash",
-    tools=[google_search],
+    model=MODEL,
+    tools=SEARCH_TOOLS,
     instruction="""You are a navigation assistant. Given a destination, provide clear directions.
     The user wants to go to: {destination}.
 

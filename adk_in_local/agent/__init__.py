@@ -1,19 +1,25 @@
+from config import MODEL, SEARCH_TOOLS, IS_GEMINI
 import sys
 import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from google.adk.agents import Agent
-from google.genai import types
 from dotenv import load_dotenv
 
-# Retry config per ADK docs recommendation for 429 RESOURCE_EXHAUSTED:
-# https://google.github.io/adk-docs/agents/models/google-gemini/#error-code-429-resource_exhausted
-_retry_config = types.GenerateContentConfig(
-    http_options=types.HttpOptions(
-        retry_options=types.HttpRetryOptions(initial_delay=2, attempts=3),
-    ),
-)
+# Retry config is Gemini-specific — only applied when not using Ollama/LiteLLM.
+# See: https://google.github.io/adk-docs/agents/models/google-gemini/#error-code-429-resource_exhausted
+_retry_config = None
+if IS_GEMINI:
+    try:
+        from google.genai import types
+        _retry_config = types.GenerateContentConfig(
+            http_options=types.HttpOptions(
+                retry_options=types.HttpRetryOptions(initial_delay=2, attempts=3),
+            ),
+        )
+    except Exception:
+        pass
 
 # Single source of truth: project root .env covers all modules
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
@@ -149,14 +155,17 @@ to the single most appropriate specialist agent. Return the specialist's full re
 # Root agent
 # ---------------------------------------------------------------------------
 
-root_agent = Agent(
+_agent_kwargs = dict(
     name="master_orchestrator",
-    model="gemini-2.5-flash",
+    model=MODEL,
     description="Master coordinator — routes requests to the best available specialist agent.",
     instruction=_instruction,
     sub_agents=_available_agents,
-    generate_content_config=_retry_config,
 )
+if _retry_config is not None:
+    _agent_kwargs["generate_content_config"] = _retry_config
+
+root_agent = Agent(**_agent_kwargs)
 
 print(f" Master Orchestrator ready — {len(_available_agents)} agent(s) loaded: "
       f"{[a.name for a in _available_agents]}")

@@ -1,12 +1,12 @@
+from config import MODEL, SEARCH_TOOLS
 from google.adk.agents import Agent
-from google.adk.tools import google_search
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
 root_agent = Agent(
     name="planner_agent",
-    model="gemini-2.5-flash",
+    model=MODEL,
     description="Agent tasked with generating creative and fun dating plan suggestions",
     instruction="""
         You are a specialized AI assistant tasked with generating creative and fun plan suggestions.
@@ -26,5 +26,5 @@ root_agent = Agent(
 
         RETURN PLAN in MARKDOWN FORMAT
     """,
-    tools=[google_search]
+    tools=SEARCH_TOOLS
 )

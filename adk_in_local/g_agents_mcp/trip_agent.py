@@ -1,22 +1,26 @@
-# agents/trip_agent.py
+from config import MODEL
+import logging
+import warnings
+logging.getLogger("toolbox_core").setLevel(logging.ERROR)
+warnings.filterwarnings("ignore", message=".*MCP.*")
+
 from google.adk.agents import Agent
 from toolbox_core import ToolboxSyncClient
+from toolbox_core.protocol import Protocol
 from dotenv import load_dotenv, find_dotenv
-
-# Import our new memory tools
 
 load_dotenv(find_dotenv())
 
-# Connect to the MCP Toolbox server running on port 7001
-# Note the different port number from the previous lab.
-toolbox = ToolboxSyncClient("http://127.0.0.1:7001")
+# Connect to the MCP Toolbox server running on port 7001.
+# Protocol.MCP_LATEST suppresses the "newer version available" warning.
+toolbox = ToolboxSyncClient("http://127.0.0.1:7001", protocol=Protocol.MCP_LATEST)
 
 # Load the toolset we defined in trip_tools.yaml
 tools = toolbox.load_toolset('trip-planner-tools')
 
 # Define the Trip Agent
 root_agent = Agent(
-    model='gemini-2.5-flash',
+    model=MODEL,
     name='trip_planner_agent',
     description='Agent that helps users plan trips by finding destinations.',
     instruction="""

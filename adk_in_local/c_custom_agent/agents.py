@@ -1,3 +1,4 @@
+from config import MODEL, SEARCH_TOOLS
 import logging
 from typing import AsyncGenerator
 import re
@@ -6,7 +7,6 @@ import re
 from google.adk.agents import LlmAgent, BaseAgent, ParallelAgent, SequentialAgent
 from google.adk.events import Event
 from google.adk.agents.invocation_context import InvocationContext
-from google.adk.tools import google_search
 from typing_extensions import override
 from dotenv import load_dotenv, find_dotenv
 
@@ -30,22 +30,22 @@ class BudgetAwarePlannerAgent(BaseAgent):
         
         # Define the specialist agents this coordinator will use.
         budget_parser_agent = LlmAgent(
-            name="BudgetParserAgent", model="gemini-2.5-flash",
+            name="BudgetParserAgent", model=MODEL,
             instruction="Analyze the user's text to find a budget. Extract only the numerical value. For example, if the user says '$100' or '150 dollars', output only the number '100' or '150'.",
             output_key="total_budget"
         )
         activity_finder_agent = LlmAgent(
-            name="ActivityFinderAgent", model="gemini-2.5-flash", tools=[google_search],
+            name="ActivityFinderAgent", model=MODEL, tools=SEARCH_TOOLS,
             instruction="Find a popular museum or tourist activity in or near Sunnyvale, CA. Output only its name.",
             output_key="found_activity"
         )
         cost_estimator_agent = LlmAgent(
-            name="CostEstimatorAgent", model="gemini-2.5-flash", tools=[google_search],
+            name="CostEstimatorAgent", model=MODEL, tools=SEARCH_TOOLS,
             instruction="The user wants to know the cost for one adult ticket for the following place: {item_name}. Search for the price and output ONLY the numerical value. For example, if a ticket is $25.99, output '25.99'. If it's free, output '0'.",
             output_key="estimated_cost"
         )
         restaurant_finder_agent = LlmAgent(
-            name="RestaurantFinderAgent", model="gemini-2.5-flash", tools=[google_search],
+            name="RestaurantFinderAgent", model=MODEL, tools=SEARCH_TOOLS,
             instruction="Find a moderately priced, well-rated restaurant in or near Sunnyvale, CA that is not fast food. Output only its name.",
             output_key="found_restaurant"
         )
@@ -76,7 +76,7 @@ class BudgetAwarePlannerAgent(BaseAgent):
             total_budget = 0.0
 
         if total_budget <= 0:
-            failure_agent = LlmAgent(name="FailureAgent", model="gemini-2.5-flash", instruction="Politely inform the user that a valid budget is needed to begin planning and end the conversation.")
+            failure_agent = LlmAgent(name="FailureAgent", model=MODEL, instruction="Politely inform the user that a valid budget is needed to begin planning and end the conversation.")
             async for event in failure_agent.run_async(ctx):
                 yield event
             return
@@ -106,7 +106,7 @@ class BudgetAwarePlannerAgent(BaseAgent):
         if (running_cost + activity_cost) <= total_budget:
             running_cost += activity_cost
             itinerary.append({"item": activity_name, "cost": activity_cost})
-            feedback_agent = LlmAgent(name="FeedbackAgent", model="gemini-2.5-flash", instruction=f"Inform the user that '{activity_name}' has been added to the plan. The current total is ${running_cost:.2f} of the ${total_budget:.2f} budget.")
+            feedback_agent = LlmAgent(name="FeedbackAgent", model=MODEL, instruction=f"Inform the user that '{activity_name}' has been added to the plan. The current total is ${running_cost:.2f} of the ${total_budget:.2f} budget.")
             async for event in feedback_agent.run_async(ctx):
                 yield event
         
@@ -143,7 +143,7 @@ class BudgetAwarePlannerAgent(BaseAgent):
         {itinerary_details}
         **Total Estimated Cost: ${running_cost:.2f}**
         """
-        summary_agent = LlmAgent(name="SummaryAgent", model="gemini-2.5-flash", instruction=summary_instruction, output_key="final_response")
+        summary_agent = LlmAgent(name="SummaryAgent", model=MODEL, instruction=summary_instruction, output_key="final_response")
         async for event in summary_agent.run_async(ctx):
             yield event
 

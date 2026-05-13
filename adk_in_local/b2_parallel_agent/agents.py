@@ -1,4 +1,4 @@
-from google.adk.tools import google_search
+from config import MODEL, SEARCH_TOOLS
 from google.adk.agents import Agent, ParallelAgent, SequentialAgent
 from dotenv import load_dotenv, find_dotenv
 
@@ -6,14 +6,14 @@ load_dotenv(find_dotenv())
 
 # Specialist Agent 1
 museum_finder_agent = Agent(
-    name="museum_finder_agent", model="gemini-2.5-flash", tools=[google_search],
+    name="museum_finder_agent", model=MODEL, tools=SEARCH_TOOLS,
     instruction="You are a museum expert. Find the best museum based on the user's query. Output only the museum's name.",
     output_key="museum_result"
 )
 
 # Specialist Agent 2
 concert_finder_agent = Agent(
-    name="concert_finder_agent", model="gemini-2.5-flash", tools=[google_search],
+    name="concert_finder_agent", model=MODEL, tools=SEARCH_TOOLS,
     instruction="You are an events guide. Find a concert based on the user's query. Output only the concert name and artist.",
     output_key="concert_result"
 )
@@ -23,8 +23,8 @@ concert_finder_agent = Agent(
 # restaurant_finder_agent = foodie_agent.copy(update={"output_key": "restaurant_result"})
 restaurant_finder_agent = Agent(
     name="restaurant_finder_agent",
-    model="gemini-2.5-flash",
-    tools=[google_search],
+    model=MODEL,
+    tools=SEARCH_TOOLS,
     instruction="""You are an expert food critic. Your goal is to find the best restaurant based on a user's request.
 
     When you recommend a place, you must output *only* the name of the establishment.
@@ -42,7 +42,7 @@ parallel_research_agent = ParallelAgent(
 
 # Agent to synthesize the parallel results
 synthesis_agent = Agent(
-    name="synthesis_agent", model="gemini-2.5-flash",
+    name="synthesis_agent", model=MODEL,
     instruction="""You are a helpful assistant. Combine the following research results into a clear, bulleted list for the user.
     - Museum: {museum_result}
     - Concert: {concert_result}

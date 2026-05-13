@@ -62,6 +62,9 @@ Thumbs.db
 .coverage
 coverage.xml
 htmlcov/
+adk_in_local/tests/reports/*
+!adk_in_local/tests/reports/report_20260513_225922.html
+!adk_in_local/tests/reports/report_20260514_003031.html
 
 # Jupyter
 .ipynb_checkpoints/
@@ -84,6 +87,7 @@ adk_in_local/mcp_tool_box/toolbox.exe
 **/.claude/
 CLAUDE.md
 **/CLAUDE.md
+!adk_in_local/GEMINI.md
 **/tasks/
 **/docs/
 **/audit/

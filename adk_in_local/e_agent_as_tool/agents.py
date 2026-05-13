@@ -1,4 +1,4 @@
-from google.adk.tools import google_search
+from config import MODEL, SEARCH_TOOLS
 from google.adk.tools.agent_tool import AgentTool 
 from google.adk.agents.invocation_context import InvocationContext
 from google.adk.events import Event
@@ -16,8 +16,8 @@ load_dotenv(find_dotenv())
 
 location_scout_agent = Agent(
     name="LocationScoutAgent",
-    model="gemini-2.5-flash",
-    tools=[google_search],
+    model=MODEL,
+    tools=SEARCH_TOOLS,
     description="Finds a specific type of location (like a museum, restaurant, or park) based on a user's request in or around Sunnyvale, CA. Returns only the name of the location.",
     instruction="""
     You are a location scout. Based on the user's request (e.g., 'an art museum', 'a cheap but good taco place'), find the best matching place and output ONLY its name.
@@ -28,8 +28,8 @@ location_scout_agent = Agent(
 
 logistics_validator_agent = Agent(
     name="LogisticsValidatorAgent",
-    model="gemini-2.5-flash",
-    tools=[google_search],
+    model=MODEL,
+    tools=SEARCH_TOOLS,
     description="Calculates the travel time between two locations or finds the operating hours for a single location.",
     instruction="""
     You are a logistics validator. Your task is to provide key logistical information.
@@ -43,7 +43,7 @@ logistics_validator_agent = Agent(
 
 trip_architect_agent = Agent(
     name="TripArchitectAgent",
-    model="gemini-2.5-flash",
+    model=MODEL,
     instruction="""
     You are an Autonomous Trip Architect. Your goal is to take a single user request and build a complete, logistically-sound itinerary in one go, without asking for feedback. You must make intelligent decisions and corrections on the user's behalf.
 

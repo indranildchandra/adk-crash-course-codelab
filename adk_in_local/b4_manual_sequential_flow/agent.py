@@ -1,5 +1,5 @@
+from config import MODEL, SEARCH_TOOLS
 from google.adk.agents import Agent
-from google.adk.tools import google_search
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -9,7 +9,7 @@ load_dotenv(find_dotenv())
 
 day_trip_agent = Agent(
     name="day_trip_agent",
-    model="gemini-2.5-flash",
+    model=MODEL,
     description="Agent specialized in generating spontaneous full-day itineraries based on mood, interests, and budget.",
     instruction="""
     You are the "Spontaneous Day Trip" Generator  - a specialized AI assistant that creates engaging full-day itineraries.
@@ -29,22 +29,22 @@ day_trip_agent = Agent(
 
 foodie_agent = Agent(
     name="foodie_agent",
-    model="gemini-2.5-flash",
-    tools=[google_search],
+    model=MODEL,
+    tools=SEARCH_TOOLS,
     instruction="You are an expert food critic. Your goal is to find the absolute best food, restaurants, or culinary experiences based on a user's request. When you recommend a place, state its name clearly. For example: 'The best sushi is at **Jin Sho**.'"
 )
 
 weekend_guide_agent = Agent(
     name="weekend_guide_agent",
-    model="gemini-2.5-flash",
-    tools=[google_search],
+    model=MODEL,
+    tools=SEARCH_TOOLS,
     instruction="You are a local events guide. Your task is to find interesting events, concerts, festivals, and activities happening on a specific weekend."
 )
 
 transportation_agent = Agent(
     name="transportation_agent",
-    model="gemini-2.5-flash",
-    tools=[google_search],
+    model=MODEL,
+    tools=SEARCH_TOOLS,
     instruction="You are a navigation assistant. Given a starting point and a destination, provide clear directions on how to get from the start to the end."
 )
 
@@ -52,7 +52,7 @@ transportation_agent = Agent(
 # We update the router's instructions to know about the new 'combo' task.
 router_agent = Agent(
     name="router_agent",
-    model="gemini-2.5-flash",
+    model=MODEL,
     instruction="""
     You are a request router. Your job is to analyze a user's query and decide which of the following agents or workflows is best suited to handle it.
     Do not answer the query yourself, only return the name of the most appropriate choice.

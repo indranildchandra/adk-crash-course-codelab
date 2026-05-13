@@ -4,13 +4,19 @@ google-adk==1.15.1; python_version>="3.9" and python_version<"3.10"
 google-adk==1.33.0; python_version>="3.10"
 
 # Additional dependencies that might be needed
-python-dotenv>=1.0.0
+python-dotenv==1.2.2
 
 # Development dependencies (optional)
-pytest==8.4.2
-pytest-asyncio==1.2.0
-black>=23.0.0
-flake8>=6.0.0
+pytest==9.0.3
+pytest-asyncio==1.3.0
+black==24.4.2
+flake8==7.1.2
 
 # MCP Toolbox client library
-toolbox-core>=0.2.0
+toolbox-core==1.0.0
+
+# Local model support (Ollama / LiteLLM)
+litellm==1.83.14
+
+# Web search for non-Gemini models (no API key required)
+ddgs==9.14.2

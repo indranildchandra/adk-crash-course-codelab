@@ -77,11 +77,31 @@ Exposes a single `root_agent` that the ADK web UI loads. It imports every module
 
 ---
 
+## Demo
+
+Screenshots of the ADK web UI and automated test report are in [`adk_in_local/README.md`](adk_in_local/README.md#demo). A sample self-contained HTML test report is included at [`adk_in_local/tests/reports/report_20260513_225922.html`](adk_in_local/tests/reports/report_20260513_225922.html).
+
+---
+
 ## Prerequisites
 
 - Python 3.8 or higher
 - **Option A (Gemini API key):** A key from [Google AI Studio](https://console.cloud.google.com/apis/api/generativelanguage.googleapis.com/credentials) — no gcloud, no billing needed
 - **Option B (Vertex AI):** A GCP project with billing enabled — see full setup below
+
+---
+
+## Working Directory — Read This First
+
+**Always `cd adk_in_local` before doing anything with the local implementation.**
+
+This applies to every interaction — running the stack, installing dependencies, running tests, and especially using AI coding tools:
+
+```bash
+cd adk_in_local
+```
+
+If you are using an AI coding assistant (Gemini CLI, Claude Code, Cursor, etc.), **open or launch it from inside `adk_in_local/`**, not from the repo root. The agents, config, virtual environment, and `GEMINI.md` / `CLAUDE.md` context files are all scoped to that directory. Starting from the repo root means the AI assistant won't pick up the project context and path-sensitive commands will fail.
 
 ---
 
@@ -177,7 +197,19 @@ source .adk_env/bin/activate       # Mac/Linux
 
 Opens the ADK web UI at [http://localhost:8080](http://localhost:8080) with SQLite-backed session persistence.
 
-Or run directly:
+To start with a clean slate (wipes all saved session history and user preferences):
+
+```bash
+./run.sh --clean
+```
+
+To clear sessions manually at any time without restarting:
+
+```bash
+rm ~/.adk/sessions/adk_web_sessions.db
+```
+
+Or run the ADK command directly (MCP Toolbox and Ollama will not be managed automatically):
 
 ```bash
 adk web
@@ -214,13 +246,24 @@ source .adk_env/bin/activate
 
 ## Model
 
-All agents use `gemini-2.5-flash`.
+Agents support two providers, configured via `adk_in_local/model.config`:
+
+```ini
+MODEL_PROVIDER=gemini          # or: ollama
+MODEL_NAME=gemini-2.5-flash    # or e.g. gemma4:e2b
+```
+
+### Gemini (cloud)
 
 | Model | Free Tier RPM | Notes |
 |-------|--------------|-------|
-| `gemini-2.5-flash` | 5 RPM | Currently active — better quality |
+| `gemini-2.5-flash` | 5 RPM | Default — best quality |
 | `gemini-2.0-flash` | 15 RPM | Shared daily quota exhausts quickly |
 | `gemini-2.0-flash-lite` | 30 RPM | Best fallback for free-tier rate limits |
+
+### Ollama (local, offline)
+
+Set `MODEL_PROVIDER=ollama` and `MODEL_NAME=<any Ollama model>`. Requires [Ollama](https://ollama.com) installed locally. DuckDuckGo search (`ddg_search`) is used automatically instead of Google Search. Tool-calling models recommended: `gemma4`, `qwen2.5`, `llama3.1`, `mistral`.
 
 ---
 

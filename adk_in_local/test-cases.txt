@@ -1,0 +1,136 @@
+TC-M-01 | master_orchestrator
+Route to day trip planner
+Prompt: "Plan a fun and artsy day out near San Francisco. Keep it affordable."
+
+TC-M-02 | master_orchestrator
+Route to foodie agent
+Prompt: "I'm in Palo Alto and I'm craving the best ramen in town. Where should I go?"
+
+TC-M-03 | master_orchestrator
+Route to navigation agent
+Prompt: "How do I get from Union Square in San Francisco to the Golden Gate Bridge?"
+
+TC-M-04 | master_orchestrator
+Route to budget planner
+Prompt: "I have a $80 budget. Plan me a day out in Sunnyvale with activities and a meal."
+
+TC-M-05 | master_orchestrator
+Route to trip architect
+Prompt: "Build me a detailed trip itinerary around Sunnyvale — I want a museum, lunch, and confirm everything is reachable within 30 minutes of each other."
+
+TC-M-06 | master_orchestrator
+Route to memory agent (multi-turn)
+Prompts:
+  Turn 1: "I love contemporary art and hate crowded places. Remember that about me."
+  Turn 2: "Now plan me a weekend activity based on my preferences."
+
+TC-M-07 | master_orchestrator
+Route to MCP trip planner
+Prompt: "Find me top-rated things to do in Paris."
+
+TC-A-01 | planner_agent
+Day trip with mood
+Prompt: "Plan a relaxing and nature-focused day trip near Sunnyvale, CA. Keep it affordable!"
+
+TC-A-02 | planner_agent
+Romantic outing
+Prompt: "Suggest a romantic evening plan for a couple in San Jose, CA."
+
+TC-B1-01 | find_and_navigate_agent
+Find and navigate to a restaurant
+Prompt: "Find me the best sushi place in Sunnyvale and tell me how to get there from downtown Mountain View."
+
+TC-B1-02 | find_and_navigate_agent
+Find and navigate to an activity
+Prompt: "Find a good museum near San Jose and give me directions from Palo Alto."
+
+TC-B2-01 | parallel_planner_agent
+Full parallel search
+Prompt: "I'm in San Francisco this weekend. Find me a museum, a concert, and a great restaurant — all in one go."
+
+TC-B2-02 | parallel_planner_agent
+City-specific parallel search
+Prompt: "Plan my Saturday in Los Angeles — best museum, any live music, and top-rated dinner spot."
+
+TC-B3-01 | iterative_planner_agent
+Plan with travel constraint
+Prompt: "Plan an activity and restaurant for a day in Sunnyvale. Everything must be within 10 minutes of each other."
+
+TC-B3-02 | iterative_planner_agent
+Tight constraint forces refinement
+Prompt: "Suggest a museum and lunch spot in San Jose. The two places must be within 5 minutes walking distance."
+
+TC-C-01 | BudgetAwarePlannerAgent
+Valid budget
+Prompt: "I have $120 to spend. Plan me a day in Sunnyvale with an activity and lunch."
+
+TC-C-02 | BudgetAwarePlannerAgent
+Invalid or missing budget
+Prompt: "Plan me a day out in Sunnyvale."
+
+TC-D-01 | routing_agent
+Food query routes to foodie
+Prompt: "What's the best brunch place in Menlo Park?"
+
+TC-D-02 | routing_agent
+Navigation query routes correctly
+Prompt: "How do I get from San Jose Airport to Stanford University?"
+
+TC-E-01 | TripArchitectAgent
+Multi-stop itinerary with validation
+Prompt: "I want to visit a museum and have lunch near Sunnyvale. Make sure both places are open today and not too far apart."
+
+TC-E-02 | TripArchitectAgent
+Logistics validation focus
+Prompt: "Is the Computer History Museum in Mountain View open on Sundays? And how far is it from downtown Sunnyvale?"
+
+TC-F-01 | MemoryCoordinatorAgent
+Preference storage and recall
+Prompts:
+  Turn 1: "I love hiking and dislike touristy spots. I'm vegetarian. Remember this."
+  Turn 2: "Now suggest a Saturday plan for me."
+
+TC-F-02 | MemoryCoordinatorAgent
+Preference override
+Prompts:
+  Turn 1: "My favourite cuisine is Italian."
+  Turn 2: "Actually I've changed my mind — I now prefer Japanese food. Update that."
+  Turn 3: "Recommend a restaurant for me based on my preference."
+
+TC-G-01 | trip_planner_agent
+Find by destination type
+Prompt: "Find me all museums in Paris."
+
+TC-G-02 | trip_planner_agent
+Find top-rated in city
+Prompt: "What are the top-rated things to do in Rome?"
+
+TC-G-03 | trip_planner_agent
+Find affordable options
+Prompt: "What are some cheap things to do in Barcelona? My budget is $20 per activity."
+
+# ── Ollama / Local Model Tests (TC-OL-*) ───────────────────────────────────
+# Run automatically when MODEL_PROVIDER=ollama in model.config.
+# Use --filter TC-OL to run manually regardless of provider.
+# All TC-OL tests use the tc_ol_planner agent — a lightweight no-tools agent
+# created inline by the test runner, optimised for reliable single-call responses.
+
+TC-OL-01 | tc_ol_planner
+Simple activity suggestion
+Prompt: "Name one fun activity or attraction in San Francisco."
+
+TC-OL-02 | tc_ol_planner
+Food recommendation
+Prompt: "What type of cuisine or food is popular in the San Francisco Bay Area?"
+
+TC-OL-03 | tc_ol_planner
+Local area knowledge
+Prompt: "Name one popular neighbourhood or area to visit in the San Francisco Bay Area."
+
+TC-OL-04 | tc_ol_planner
+Budget-aware suggestion
+Prompt: "Suggest one free or low-cost outdoor activity near Sunnyvale, California."
+
+TC-OL-05 | tc_ol_planner
+Outdoor activity suggestion
+Prompt: "Name one outdoor park or trail near San Jose, California."

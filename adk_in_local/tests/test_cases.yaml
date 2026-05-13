@@ -1,0 +1,319 @@
+test_cases:
+
+  # ── Master Orchestrator ──────────────────────────────────────────────────────
+
+  - id: TC-M-01
+    agent: master_orchestrator
+    name: Route to day trip planner
+    turns:
+      - "Plan a fun and artsy day out near San Francisco. Keep it affordable."
+    expected: >
+      Routes to planner_agent. Response should include multiple plan options,
+      venue names with coordinates, and stay within a moderate budget tone.
+
+  - id: TC-M-02
+    agent: master_orchestrator
+    name: Route to foodie agent
+    turns:
+      - "I'm in Palo Alto and I'm craving the best ramen in town. Where should I go?"
+    expected: >
+      Routes to foodie_agent. Response should name a specific restaurant
+      with a clear recommendation and location.
+
+  - id: TC-M-03
+    agent: master_orchestrator
+    name: Route to navigation agent
+    turns:
+      - "How do I get from Union Square in San Francisco to the Golden Gate Bridge?"
+    expected: >
+      Routes to transportation_agent or find_and_navigate_agent.
+      Response should provide step-by-step directions.
+
+  - id: TC-M-04
+    agent: master_orchestrator
+    name: Route to budget planner
+    turns:
+      - "I have a $80 budget. Plan me a day out in Sunnyvale with activities and a meal."
+    expected: >
+      Routes to BudgetAwarePlannerAgent. Response should extract the $80 budget,
+      find activities and a restaurant, and stay within the limit.
+
+  - id: TC-M-05
+    agent: master_orchestrator
+    name: Route to trip architect
+    turns:
+      - "Build me a detailed trip itinerary around Sunnyvale — I want a museum, lunch, and confirm everything is reachable within 30 minutes of each other."
+    expected: >
+      Routes to TripArchitectAgent. Response should call specialist sub-agents
+      for location scouting and logistics before assembling a validated itinerary.
+
+  - id: TC-M-06
+    agent: master_orchestrator
+    name: Route to memory agent (multi-turn)
+    turns:
+      - "I love contemporary art and hate crowded places. Remember that about me."
+      - "Now plan me a weekend activity based on my preferences."
+    expected: >
+      Routes to MemoryCoordinatorAgent. Second response should reference art
+      and low-crowd preferences without being told again.
+
+  - id: TC-M-07
+    agent: master_orchestrator
+    name: Route to MCP trip planner
+    turns:
+      - "Find me top-rated things to do in Paris."
+    expected: >
+      Routes to trip_planner_agent. Response should return destination results
+      from the database with names and ratings.
+
+  # ── Single Agent ─────────────────────────────────────────────────────────────
+
+  - id: TC-A-01
+    agent: planner_agent
+    name: Day trip with mood
+    turns:
+      - "Plan a relaxing and nature-focused day trip near Sunnyvale, CA. Keep it affordable!"
+    expected: >
+      2–3 plan options each with activity names, coordinates (lat/lng),
+      and brief descriptions. Budget should feel moderate, not luxury.
+
+  - id: TC-A-02
+    agent: planner_agent
+    name: Romantic outing
+    turns:
+      - "Suggest a romantic evening plan for a couple in San Jose, CA."
+    expected: >
+      Plans tailored to a couple — dinner and activity combination,
+      moderate budget, venue names with location details.
+
+  # ── Sequential Agent ─────────────────────────────────────────────────────────
+
+  - id: TC-B1-01
+    agent: find_and_navigate_agent
+    name: Find and navigate to a restaurant
+    turns:
+      - "Find me the best sushi place in Sunnyvale and tell me how to get there from downtown Mountain View."
+    expected: >
+      First sub-agent names a specific sushi restaurant. Second sub-agent
+      provides directions from Mountain View to that restaurant.
+
+  - id: TC-B1-02
+    agent: find_and_navigate_agent
+    name: Find and navigate to an activity
+    turns:
+      - "Find a good museum near San Jose and give me directions from Palo Alto."
+    expected: >
+      Museum name returned first, followed by clear step-by-step
+      directions from Palo Alto to the museum.
+
+  # ── Parallel Agent ───────────────────────────────────────────────────────────
+
+  - id: TC-B2-01
+    agent: parallel_planner_agent
+    name: Full parallel search
+    turns:
+      - "I'm in San Francisco this weekend. Find me a museum, a concert, and a great restaurant — all in one go."
+    expected: >
+      All three results (museum, concert, restaurant) returned together
+      in a bulleted summary. Response feels like a combined plan.
+
+  - id: TC-B2-02
+    agent: parallel_planner_agent
+    name: City-specific parallel search
+    turns:
+      - "Plan my Saturday in Los Angeles — best museum, any live music, and top-rated dinner spot."
+    expected: >
+      Three results synthesised into a single cohesive response for LA.
+      Each item should be named specifically.
+
+  # ── Loop / Iterative Agent ───────────────────────────────────────────────────
+
+  - id: TC-B3-01
+    agent: iterative_planner_agent
+    name: Plan with travel constraint
+    turns:
+      - "Plan an activity and restaurant for a day in Sunnyvale. Everything must be within 10 minutes of each other."
+    expected: >
+      Agent proposes a plan, critiques it against the travel time constraint,
+      and refines if needed. Final answer satisfies the constraint.
+
+  - id: TC-B3-02
+    agent: iterative_planner_agent
+    name: Tight constraint forces refinement
+    turns:
+      - "Suggest a museum and lunch spot in San Jose. The two places must be within 5 minutes walking distance."
+    expected: >
+      Multiple refinement rounds visible or implied. Final answer includes
+      two genuinely close-together places.
+
+  # ── Budget-Aware Planner ─────────────────────────────────────────────────────
+
+  - id: TC-C-01
+    agent: BudgetAwarePlannerAgent
+    name: Valid budget
+    turns:
+      - "I have $120 to spend. Plan me a day in Sunnyvale with an activity and lunch."
+    expected: >
+      Agent extracts $120 budget, finds an activity and restaurant, estimates costs,
+      and confirms they fit within the budget. Final plan includes cost breakdown.
+
+  - id: TC-C-02
+    agent: BudgetAwarePlannerAgent
+    name: Invalid or missing budget
+    turns:
+      - "Plan me a day out in Sunnyvale."
+    expected: >
+      Agent politely informs the user that a valid budget is required
+      to proceed (FailureAgent path).
+
+  # ── Routing Agent ────────────────────────────────────────────────────────────
+
+  - id: TC-D-01
+    agent: routing_agent
+    name: Food query routes to foodie
+    turns:
+      - "What's the best brunch place in Menlo Park?"
+    expected: >
+      Router identifies this as a food query and delegates to foodie_agent.
+      A specific restaurant recommendation is returned.
+
+  - id: TC-D-02
+    agent: routing_agent
+    name: Navigation query routes correctly
+    turns:
+      - "How do I get from San Jose Airport to Stanford University?"
+    expected: >
+      Router identifies this as a navigation query and delegates to
+      transportation_agent. Clear directions are returned.
+
+  # ── Trip Architect ───────────────────────────────────────────────────────────
+
+  - id: TC-E-01
+    agent: TripArchitectAgent
+    name: Multi-stop itinerary with validation
+    turns:
+      - "I want to visit a museum and have lunch near Sunnyvale. Make sure both places are open today and not too far apart."
+    expected: >
+      LocationScoutAgent called to find locations. LogisticsValidatorAgent called
+      to validate travel time and hours. Final response is a validated itinerary.
+
+  - id: TC-E-02
+    agent: TripArchitectAgent
+    name: Logistics validation focus
+    turns:
+      - "Is the Computer History Museum in Mountain View open on Sundays? And how far is it from downtown Sunnyvale?"
+    expected: >
+      LogisticsValidatorAgent invoked. Response includes opening hours
+      and travel time or distance from Sunnyvale.
+
+  # ── Memory Agent ─────────────────────────────────────────────────────────────
+
+  - id: TC-F-01
+    agent: MemoryCoordinatorAgent
+    name: Preference storage and recall
+    turns:
+      - "I love hiking and dislike touristy spots. I'm vegetarian. Remember this."
+      - "Now suggest a Saturday plan for me."
+    expected: >
+      Second response recommends hiking or nature activities and vegetarian-friendly
+      dining without being told the preferences again.
+
+  - id: TC-F-02
+    agent: MemoryCoordinatorAgent
+    name: Preference override
+    turns:
+      - "My favourite cuisine is Italian."
+      - "Actually I've changed my mind — I now prefer Japanese food. Update that."
+      - "Recommend a restaurant for me based on my preference."
+    expected: >
+      Third response recommends a Japanese restaurant, not Italian,
+      showing the memory was correctly updated.
+
+  # ── MCP Trip Planner ─────────────────────────────────────────────────────────
+
+  - id: TC-G-01
+    agent: trip_planner_agent
+    name: Find by destination type
+    turns:
+      - "Find me all museums in Paris."
+    expected: >
+      Agent calls find_destinations_by_type tool with city=Paris and type=Museum.
+      Returns a list of matching destinations with names, types, and ratings.
+
+  - id: TC-G-02
+    agent: trip_planner_agent
+    name: Find top-rated in city
+    turns:
+      - "What are the top-rated things to do in Rome?"
+    expected: >
+      Agent calls find_top_rated_in_city with city=Rome.
+      Returns up to 5 highest-rated destinations ordered by rating.
+
+  - id: TC-G-03
+    agent: trip_planner_agent
+    name: Find affordable options
+    turns:
+      - "What are some cheap things to do in Barcelona? My budget is $20 per activity."
+    expected: >
+      Agent calls find_affordable_options with city=Barcelona and max_cost=20.
+      Returns destinations where average_cost is at or below $20.
+
+  # ── Ollama / Local Model Tests (TC-OL-*) ─────────────────────────────────────
+  # Lenient expectations designed for local models (gemma4, qwen2.5, etc.).
+  # Run automatically when MODEL_PROVIDER=ollama. Use --filter TC-OL to run manually.
+  #
+  # Design rules for TC-OL-* prompts:
+  #   - Use planner_agent for TC-OL-01..04 (single LLM call, no tool orchestration).
+  #     Multi-agent chains (routing_agent, find_and_navigate_agent, BudgetAwarePlannerAgent)
+  #     require 3–6 LLM calls; small local models regularly exceed the timeout.
+  #   - Avoid date-relative phrases ("this weekend", "tonight") — the planner_agent
+  #     instruction contains [START_DATE_YYYY-MM-DD] placeholders that cause local models
+  #     to ask for specific dates instead of answering.
+  #   - TC-OL-05 uses MemoryCoordinatorAgent (2-turn) to validate session memory recall.
+
+  - id: TC-OL-01
+    agent: tc_ol_planner
+    name: Simple activity suggestion
+    turns:
+      - "Name one fun activity or attraction in San Francisco."
+    expected: >
+      Response mentions at least one activity, place, or neighbourhood in or
+      near San Francisco. Any coherent suggestion with a location name passes.
+      The number of suggestions does not matter — one or more is fine.
+
+  - id: TC-OL-02
+    agent: tc_ol_planner
+    name: Food recommendation
+    turns:
+      - "What type of cuisine or food is popular in the San Francisco Bay Area?"
+    expected: >
+      Response mentions any food, cuisine type, or dish. No specific restaurant
+      or location required — any coherent food suggestion passes.
+
+  - id: TC-OL-03
+    agent: tc_ol_planner
+    name: Local area knowledge
+    turns:
+      - "Name one popular neighbourhood or area to visit in the San Francisco Bay Area."
+    expected: >
+      Response mentions at least one neighbourhood, city, or area in the Bay Area.
+      Any named location passes. The number of suggestions does not matter.
+
+  - id: TC-OL-04
+    agent: tc_ol_planner
+    name: Budget-aware suggestion
+    turns:
+      - "Suggest one free or low-cost outdoor activity near Sunnyvale, California."
+    expected: >
+      Response mentions at least one activity, park, or thing to do in or near
+      Sunnyvale. Any named suggestion passes. The number of suggestions does not matter.
+
+  - id: TC-OL-05
+    agent: tc_ol_planner
+    name: Outdoor activity suggestion
+    turns:
+      - "Name one outdoor park or trail near San Jose, California."
+    expected: >
+      Response mentions at least one outdoor activity, park, trail, or nature
+      area near San Jose. Any coherent outdoor suggestion with a name passes.
+      The number of suggestions does not matter.

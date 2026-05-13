@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADK Test Report — 2026-05-14 00:30:31</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          background: #f8fafc; color: #1e293b; padding: 24px; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 24px; }
+  .summary { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+           padding: 12px 20px; text-align: center; min-width: 90px; }
+  .stat-num { font-size: 1.8rem; font-weight: 700; }
+  .stat-lbl { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: .05em; }
+  .progress-bar { background: #e2e8f0; border-radius: 999px; height: 10px;
+                   margin-bottom: 20px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #22c55e; border-radius: 999px;
+                    transition: width .3s; width: 100%; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filter-btn { border: 1px solid #e2e8f0; background: #fff; border-radius: 6px;
+                 padding: 6px 14px; cursor: pointer; font-size: 0.85rem; }
+  .filter-btn:hover { background: #f1f5f9; }
+  .filter-btn.active { background: #1e293b; color: #fff; border-color: #1e293b; }
+  .card { border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+  .card-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+                  cursor: pointer; list-style: none; flex-wrap: wrap; }
+  .card-header::-webkit-details-marker { display: none; }
+  .tc-id { font-weight: 700; font-size: 0.85rem; min-width: 80px; }
+  .tc-name { flex: 1; font-size: 0.9rem; }
+  .tc-agent { font-size: 0.78rem; color: #64748b; font-family: monospace; }
+  .badge { font-size: 0.75rem; font-weight: 700; color: #fff; border-radius: 4px;
+            padding: 2px 8px; letter-spacing: .05em; }
+  .duration { font-size: 0.75rem; color: #94a3b8; }
+  .score { font-weight: 600; }
+  .card-body { padding: 16px; border-top: 1px solid rgba(0,0,0,.06); display: flex;
+                flex-direction: column; gap: 12px; }
+  .section { display: flex; flex-direction: column; gap: 6px; }
+  .label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: .06em; color: #64748b; }
+  .turn { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px;
+           display: flex; flex-direction: column; gap: 8px; }
+  .prompt-box { font-style: italic; color: #475569; white-space: pre-wrap; }
+  .response-box { white-space: pre-wrap; font-size: 0.9rem; max-height: 300px;
+                   overflow-y: auto; background: #fff; border: 1px solid #e2e8f0;
+                   border-radius: 4px; padding: 8px; }
+  .expected-box { color: #475569; font-size: 0.88rem; white-space: pre-wrap; }
+  .verdict-box { background: #f1f5f9; border-radius: 6px; padding: 10px 14px; font-size: 0.88rem; }
+  .error-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px;
+                padding: 10px; font-family: monospace; font-size: 0.8rem; white-space: pre-wrap;
+                color: #b91c1c; max-height: 200px; overflow-y: auto; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<h1>ADK Agent Test Report</h1>
+<div class="meta">Run at: 2026-05-14 00:30:31 &nbsp;·&nbsp; 5 test cases</div>
+
+<div class="summary">
+  <div class="stat"><div class="stat-num">5</div><div class="stat-lbl">Total</div></div>
+  <div class="stat"><div class="stat-num" style="color:#22c55e">5</div><div class="stat-lbl">Passed</div></div>
+  <div class="stat"><div class="stat-num" style="color:#ef4444">0</div><div class="stat-lbl">Failed</div></div>
+  <div class="stat"><div class="stat-num" style="color:#f59e0b">0</div><div class="stat-lbl">Skipped</div></div>
+  <div class="stat"><div class="stat-num" style="color:#8b5cf6">0</div><div class="stat-lbl">Errors</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">Pass rate</div></div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill"></div></div>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="ALL" onclick="filterCards('ALL')">All (5)</button>
+  <button class="filter-btn" data-filter="PASS" onclick="filterCards('PASS')"><span style="color:#22c55e">●</span> PASS (5)</button><button class="filter-btn" data-filter="FAIL" onclick="filterCards('FAIL')"><span style="color:#ef4444">●</span> FAIL (0)</button><button class="filter-btn" data-filter="SKIP" onclick="filterCards('SKIP')"><span style="color:#f59e0b">●</span> SKIP (0)</button><button class="filter-btn" data-filter="ERROR" onclick="filterCards('ERROR')"><span style="color:#8b5cf6">●</span> ERROR (0)</button>
+</div>
+
+
+        <details class="card" data-status="PASS" style="border-left:4px solid #22c55e; background:#f0fdf4">
+          <summary class="card-header">
+            <span class="tc-id">TC-OL-01</span>
+            <span class="tc-name">Simple activity suggestion</span>
+            <span class="tc-agent">agent: tc_ol_planner</span>
+            <span class="badge" style="background:#22c55e">PASS</span>
+            <span class="duration">25747ms</span>
+          </summary>
+          <div class="card-body">
+            <div class="section">
+              <div class="label">Expected behaviour</div>
+              <div class="expected-box">Response mentions at least one activity, place, or neighbourhood in or near San Francisco. Any coherent suggestion with a location name passes. The number of suggestions does not matter — one or more is fine.
+</div>
+            </div>
+            
+            <div class="turn">
+              <div class="label">Turn 1 — Prompt</div>
+              <div class="prompt-box">Name one fun activity or attraction in San Francisco.</div>
+              <div class="label">Response</div>
+              <div class="response-box">Thinking Process:
+
+1.  **Analyze the Request:** The user wants one fun activity or attraction in San Francisco.
+2.  **Analyze the Persona Constraints:**
+    *   Role: Concise Bay Area travel assistant.
+    *   Style: Brief, general knowledge only, short, direct responses, specific place names.
+    *   Length constraint: 2-3 sentences max.
+    *   Internal Name: tc_ol_planner.
+3.  **Identify Suitable San Francisco Attractions (General Knowledge):** Golden Gate Bridge, Alcatraz, Fisherman's Wharf, Cable Cars, Lombard Street.
+4.  **Select and Formulate the Answer (Concise):** I will pick a widely recognized and fun option and keep the response brief.
+5.  **Final Review against Constraints:** Is it brief? Yes. Is it direct? Yes. Does it use a specific place name? Yes. (Passes check.)
+Visit Fisherman's Wharf for sea lions and tasty seafood. You can also take a ride on the historic cable cars to see the city.</div>
+            </div>
+            
+            <div class="verdict-box">
+              <strong>Judge verdict:</strong> <span class="score">Score: 10/10</span> — The response provides specific San Francisco locations (Fisherman's Wharf and cable cars) as suggested activities.
+            </div>
+          </div>
+        </details>
+        <details class="card" data-status="PASS" style="border-left:4px solid #22c55e; background:#f0fdf4">
+          <summary class="card-header">
+            <span class="tc-id">TC-OL-02</span>
+            <span class="tc-name">Food recommendation</span>
+            <span class="tc-agent">agent: tc_ol_planner</span>
+            <span class="badge" style="background:#22c55e">PASS</span>
+            <span class="duration">23536ms</span>
+          </summary>
+          <div class="card-body">
+            <div class="section">
+              <div class="label">Expected behaviour</div>
+              <div class="expected-box">Response mentions any food, cuisine type, or dish. No specific restaurant or location required — any coherent food suggestion passes.
+</div>
+            </div>
+            
+            <div class="turn">
+              <div class="label">Turn 1 — Prompt</div>
+              <div class="prompt-box">What type of cuisine or food is popular in the San Francisco Bay Area?</div>
+              <div class="label">Response</div>
+              <div class="response-box">Thinking Process:
+
+1.  **Analyze the Request:** The user is asking about popular cuisine/food in the San Francisco Bay Area.
+2.  **Identify Persona Constraints:**
+    *   Role: Concise Bay Area travel assistant.
+    *   Style: Brief, general knowledge only, short, direct responses, specific place names.
+    *   Internal Name: tc_ol_planner.
+    *   Length Limit: 2-3 sentences max.
+3.  **Determine Key Information (Bay Area Cuisine):** The Bay Area is known for diverse food, including farm-to-table, seafood, ethnic food (especially Asian), and craft breweries/casual dining.
+4.  **Draft the Response (Applying Constraints):** Focus on the most iconic or defining culinary trends.
+5.  **Refine for Conciseness:** Ensure the answer is brief and direct.
+
+*(Self-Correction during drafting: Avoid listing too many specific restaurants; stick to the general culinary vibe.)*
+
+6.  **Final Output Generation.**
+The Bay Area is known for its diverse and high-quality food scene, heavily influenced by farm-to-table dining and fresh seafood. Vietnamese and Chinese cuisine are particularly popular, alongside a strong emphasis on craft breweries and casual dining options.</div>
+            </div>
+            
+            <div class="verdict-box">
+              <strong>Judge verdict:</strong> <span class="score">Score: 9/10</span> — The response accurately mentions diverse food types and specific cuisine trends in the Bay Area without listing any specific restaurants.
+            </div>
+          </div>
+        </details>
+        <details class="card" data-status="PASS" style="border-left:4px solid #22c55e; background:#f0fdf4">
+          <summary class="card-header">
+            <span class="tc-id">TC-OL-03</span>
+            <span class="tc-name">Local area knowledge</span>
+            <span class="tc-agent">agent: tc_ol_planner</span>
+            <span class="badge" style="background:#22c55e">PASS</span>
+            <span class="duration">17582ms</span>
+          </summary>
+          <div class="card-body">
+            <div class="section">
+              <div class="label">Expected behaviour</div>
+              <div class="expected-box">Response mentions at least one neighbourhood, city, or area in the Bay Area. Any named location passes. The number of suggestions does not matter.
+</div>
+            </div>
+            
+            <div class="turn">
+              <div class="label">Turn 1 — Prompt</div>
+              <div class="prompt-box">Name one popular neighbourhood or area to visit in the San Francisco Bay Area.</div>
+              <div class="label">Response</div>
+              <div class="response-box">Thinking Process:
+
+1.  **Analyze the Request:** The user wants one popular neighborhood or area to visit in the San Francisco Bay Area.
+2.  **Analyze the Persona Constraints:**
+    *   Role: Concise Bay Area travel assistant.
+    *   Style: Brief, general knowledge only. Short, direct responses.
+    *   Format: 2-3 sentences maximum. Specific place names only.
+    *   Internal Name: &quot;tc_ol_planner&quot;.
+3.  **Identify Suitable Locations:** Popular/must-visit areas in the Bay Area include Fisherman's Wharf, North Beach, Haight-Ashbury, Golden Gate Park area, and the Mission District.
+4.  **Select the Best Option (and formulate the response):** North Beach or Fisherman's Wharf are very classic and well-known.
+5.  **Draft the Response (checking constraints):** Keep it brief and direct.
+
+*Drafting:* North Beach is a popular historic neighborhood known for Italian heritage and vibrant nightlife. It is home to many famous cafes and bookstores.
+
+6.  **Final Review:** Meets conciseness and specificity requirements. (Response is good.)
+Visit North Beach for its historic Italian architecture and vibrant atmosphere. It is known for its lively nightlife and historic bookstores.</div>
+            </div>
+            
+            <div class="verdict-box">
+              <strong>Judge verdict:</strong> <span class="score">Score: 9/10</span> — The response provides a valid neighborhood (North Beach) in the Bay Area and includes relevant details about its characteristics.
+            </div>
+          </div>
+        </details>
+        <details class="card" data-status="PASS" style="border-left:4px solid #22c55e; background:#f0fdf4">
+          <summary class="card-header">
+            <span class="tc-id">TC-OL-04</span>
+            <span class="tc-name">Budget-aware suggestion</span>
+            <span class="tc-agent">agent: tc_ol_planner</span>
+            <span class="badge" style="background:#22c55e">PASS</span>
+            <span class="duration">19660ms</span>
+          </summary>
+          <div class="card-body">
+            <div class="section">
+              <div class="label">Expected behaviour</div>
+              <div class="expected-box">Response mentions at least one activity, park, or thing to do in or near Sunnyvale. Any named suggestion passes. The number of suggestions does not matter.
+</div>
+            </div>
+            
+            <div class="turn">
+              <div class="label">Turn 1 — Prompt</div>
+              <div class="prompt-box">Suggest one free or low-cost outdoor activity near Sunnyvale, California.</div>
+              <div class="label">Response</div>
+              <div class="response-box">Thinking Process:
+
+1.  **Analyze the Request:** The user wants a suggestion for a free or low-cost outdoor activity near Sunnyvale, California.
+2.  **Analyze the Persona:** I must act as a concise Bay Area travel assistant. Responses must be brief, direct, general knowledge, and limited to 2-3 sentences, focusing on specific place names.
+3.  **Identify Location Context:** Sunnyvale, CA.
+4.  **Brainstorm Local Outdoor Activities (Free/Low Cost):**
+    *   Presidio/Military areas (walking).
+    *   Sunnyvale Downtown/Parks (e.g., Stevens Creek Beach Park, local trails).
+    *   Mission Bay/Waterfront access.
+5.  **Select the Best/Most General Option:** Hiking/walking in a local park or along the water is a standard, free suggestion.
+6.  **Formulate the Response (Concise &amp; Specific):** Focus on a well-known local spot.
+
+*Drafting the response based on the constraints.*
+You can enjoy a walk or hike at Stevens Creek Beach Park near Sunnyvale. This park offers scenic trails along the creek and beach access. It is a great, free spot for outdoor recreation.</div>
+            </div>
+            
+            <div class="verdict-box">
+              <strong>Judge verdict:</strong> <span class="score">Score: 10/10</span> — The response suggests a specific park (Stevens Creek Beach Park) for an outdoor activity near Sunnyvale, California, which aligns with the expected behavior.
+            </div>
+          </div>
+        </details>
+        <details class="card" data-status="PASS" style="border-left:4px solid #22c55e; background:#f0fdf4">
+          <summary class="card-header">
+            <span class="tc-id">TC-OL-05</span>
+            <span class="tc-name">Outdoor activity suggestion</span>
+            <span class="tc-agent">agent: tc_ol_planner</span>
+            <span class="badge" style="background:#22c55e">PASS</span>
+            <span class="duration">26455ms</span>
+          </summary>
+          <div class="card-body">
+            <div class="section">
+              <div class="label">Expected behaviour</div>
+              <div class="expected-box">Response mentions at least one outdoor activity, park, trail, or nature area near San Jose. Any coherent outdoor suggestion with a name passes. The number of suggestions does not matter.
+</div>
+            </div>
+            
+            <div class="turn">
+              <div class="label">Turn 1 — Prompt</div>
+              <div class="prompt-box">Name one outdoor park or trail near San Jose, California.</div>
+              <div class="label">Response</div>
+              <div class="response-box">Thinking Process:
+
+1.  **Analyze the Request:** The user wants the name of one outdoor park or trail near San Jose, California.
+2.  **Analyze the Persona/Constraints:**
+    *   Role: Concise Bay Area travel assistant.
+    *   Style: Brief, general knowledge only, short, direct responses, specific place names, 2-3 sentences maximum.
+    *   Internal Name: &quot;tc_ol_planner&quot;.
+3.  **Identify Relevant Knowledge (San Jose/Bay Area Parks):** Need a well-known park near San Jose.
+4.  **Select a Location:** Options include Rancho San Antonio, El Camino Park, or trails within the Santa Clara River watershed. I will choose a widely recognized one.
+5.  **Formulate the Response (Adhering to Constraints):** Keep it brief and specific.
+
+6.  **Final Output Generation.**
+El Camino Park is a popular option near San Jose. It offers walking trails and open spaces along the Santa Clara River.</div>
+            </div>
+            
+            <div class="verdict-box">
+              <strong>Judge verdict:</strong> <span class="score">Score: 9/10</span> — The response provided a specific outdoor park (El Camino Park) near San Jose and mentioned that it offers walking trails, which aligns with the expected behavior.
+            </div>
+          </div>
+        </details>
+
+<script>
+  function filterCards(status) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`[data-filter="${status}"]`).classList.add('active');
+    document.querySelectorAll('.card').forEach(c => {
+      c.classList.toggle('hidden', status !== 'ALL' && c.dataset.status !== status);
+    });
+  }
+</script>
+</body>
+</html>
