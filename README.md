@@ -25,7 +25,15 @@ The codelab is delivered through two Google Colab notebooks at the repo root. Op
 .
 ├── ADK_Learning_tools.ipynb              # Colab notebook — Sessions 1–4 (setup, custom tools, memory)
 ├── ADK_Learning_tool_multi_agents.ipynb  # Colab notebook — Sessions 5–8 (multi-agent patterns)
+├── demo/                                 # Screenshots of ADK web UI and sample test report
 └── adk_in_local/                         # Local runnable implementation of all agent modules
+    ├── config.py                         # Central config — reads model.config, exports MODEL, SEARCH_TOOLS, IS_GEMINI
+    ├── model.config                      # Single source of truth for model/provider/judge/timeout settings
+    ├── run.sh                            # Start stack: Ollama (if needed) + MCP Toolbox + adk web
+    ├── requirements.txt
+    ├── setup_venv.sh / setup_venv.bat
+    ├── tools/                            # Custom tools (DuckDuckGo search for Ollama path)
+    ├── agent/                            # Master orchestrator — single root_agent for ADK web UI
     ├── a_single_agent/                   # Single agent — creative outing planner
     ├── b1_sequential_agent/              # Sequential — find location then get directions
     ├── b2_parallel_agent/                # Parallel — search museum, concert, restaurant simultaneously
@@ -36,11 +44,12 @@ The codelab is delivered through two Google Colab notebooks at the repo root. Op
     ├── e_agent_as_tool/                  # Agents as tools — trip architect calling specialist agents
     ├── f_agent_with_memory/              # Session memory — personalised planner with preference recall
     ├── g_agents_mcp/                     # MCP toolbox — database-backed destination search
-    ├── agent/                            # Master orchestrator — single root_agent for ADK web UI
     ├── mcp_tool_box/                     # MCP Toolbox server binary and config
-    ├── requirements.txt
-    ├── setup_venv.sh / setup_venv.bat
-    └── run.sh
+    ├── tests/                            # Automated test suite — 26 + 5 TC-OL-* test cases, HTML reports
+    ├── TEST-CASES.md                     # All test case prompts and expected behaviours
+    ├── TEST-CASES-EXECUTION.md           # How to run tests, judge config, report format
+    ├── test-cases.txt                    # Compact test case index
+    └── GEMINI.md                         # Project context file for Gemini CLI users
 ```
 
 ---
@@ -79,7 +88,22 @@ Exposes a single `root_agent` that the ADK web UI loads. It imports every module
 
 ## Demo
 
-Screenshots of the ADK web UI and automated test report are in [`adk_in_local/README.md`](adk_in_local/README.md#demo). A sample self-contained HTML test report is included at [`adk_in_local/tests/reports/report_20260513_225922.html`](adk_in_local/tests/reports/report_20260513_225922.html).
+### ADK Web UI — Step-by-step agent execution
+
+| | |
+|---|---|
+| ![User query](demo/event-1-user-query.png) | ![Orchestrator thinking](demo/event-2-master-orchestrator-agent-thinking.png) |
+| ![Orchestrator routes](demo/event-3-master-orchestrator-agent-initiates-transfer.png) | ![Trip architect output](demo/event-4-trip-architect-agent-output-1.png) |
+
+![End-to-end trace](demo/end-to-end-trace.png)
+
+### Automated test report
+
+![Test report](demo/adk-agent-test-report.png)
+
+Sample self-contained HTML reports:
+- [`report_20260513_225922.html`](adk_in_local/tests/reports/report_20260513_225922.html)
+- [`report_20260514_003031.html`](adk_in_local/tests/reports/report_20260514_003031.html)
 
 ---
 
@@ -88,6 +112,7 @@ Screenshots of the ADK web UI and automated test report are in [`adk_in_local/RE
 - Python 3.8 or higher
 - **Option A (Gemini API key):** A key from [Google AI Studio](https://console.cloud.google.com/apis/api/generativelanguage.googleapis.com/credentials) — no gcloud, no billing needed
 - **Option B (Vertex AI):** A GCP project with billing enabled — see full setup below
+- **Option C (Ollama — local, offline):** [Ollama](https://ollama.com) installed locally — no API key, no billing, runs entirely on your machine
 
 ---
 

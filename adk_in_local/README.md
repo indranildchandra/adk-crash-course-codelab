@@ -19,7 +19,9 @@ For a guided walkthrough, refer to the [codelab](https://codelabs.developers.goo
 
 ![Test report](../demo/adk-agent-test-report.png)
 
-A sample self-contained HTML report is included at [`tests/reports/report_20260513_225922.html`](tests/reports/report_20260513_225922.html).
+Sample self-contained HTML reports:
+- [`report_20260513_225922.html`](tests/reports/report_20260513_225922.html)
+- [`report_20260514_003031.html`](tests/reports/report_20260514_003031.html)
 
 ---
 
@@ -58,6 +60,7 @@ This is intentional: `snake_case` = standard ADK wiring, `PascalCase` = custom P
 - Python 3.8 or higher
 - **Option A (Gemini API key):** A key from [Google AI Studio](https://console.cloud.google.com/apis/api/generativelanguage.googleapis.com/credentials) — no gcloud, no billing needed
 - **Option B (Vertex AI):** A GCP project with billing enabled — higher rate limits, no daily cap, recommended for production
+- **Option C (Ollama — local, offline):** [Ollama](https://ollama.com) installed locally — no API key, no billing, runs entirely on your machine
 
 ## Quick Setup
 
@@ -260,7 +263,9 @@ Multi-agent chains make several LLM calls per request (orchestrator + sub-agents
 
 Automated tests are defined in `tests/test_cases.yaml` (26 test cases across all agents) and evaluated by a local LLM judge — no Gemini API calls, no cost. See [TEST-CASES-EXECUTION.md](TEST-CASES-EXECUTION.md) for the full guide and [TEST-CASES.md](TEST-CASES.md) for all test case prompts and expected behaviours.
 
-A sample HTML report is included at [`tests/reports/report_20260513_225922.html`](tests/reports/report_20260513_225922.html).
+Sample self-contained HTML reports:
+- [`report_20260513_225922.html`](tests/reports/report_20260513_225922.html)
+- [`report_20260514_003031.html`](tests/reports/report_20260514_003031.html)
 
 ### Quick start
 

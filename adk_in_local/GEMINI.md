@@ -168,7 +168,7 @@ Available tools: `find_destinations_by_type(city, type)`, `find_top_rated_in_cit
 - Test cases defined in `tests/test_cases.yaml` — 26 Gemini-quality tests + 5 TC-OL-* lenient Ollama tests
 - Each test runs via ADK `Runner` + `InMemorySessionService` (multi-turn tests share a session)
 - LLM judge: local Ollama model (`JUDGE_MODEL` in `model.config`) — zero API cost, auto-pulled on first run
-- Output: `tests/reports/report_<timestamp>.html` (gitignored except the sample report)
+- Output: `tests/reports/report_<timestamp>.html` (gitignored except sample reports: `report_20260513_225922.html`, `report_20260514_003031.html`)
 
 **Two-phase execution** (Ollama / Apple Silicon optimised):
 - Phase 1 — all agent calls run back-to-back while the agent model is warm (`collected (Xms)` per test)
